@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.action.extension" value="do"/>
+    <constant name="struts.custom.i18n.resources" value="messageResource"/>
+    <constant name="struts.multipart.maxSize" value="1073741824" /> 
+    <package name="gather" extends="json-default" namespace="/">
+        
+        <!-- 
+        <action name="user_*" class="com.rmssmobile.gather.action.UserAction" method="{1}">
+            <result name="success">welcome.jsp</result>
+        </action>
+         -->
+         
+        <action name="chars" class="CharsAction">
+            <result name="success" type="json">
+                <param name="includeProperties">chars</param>
+            </result>
+        </action>
+         
+        <action name="upload" class="UploadAction">
+            <interceptor-ref name="defaultStack">
+                <param name="fileUpload.allowedTypes"></param>
+                <param name="fileUpload.maximumSize">2097152</param>
+            </interceptor-ref>
+            <result name="input">upload.jsp</result>
+            <result name="success" type="json">
+                <param name="root">uploadFile</param>
+                <param name="includeProperties">playUrl</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">actionErrors</param>
+            </result>
+        </action>
+        
+        <action name="download" class="DownloadAction">
+            <result name="success" type="stream">
+                <param name="contentType">audio/mpeg</param>
+                <param name="inputName">targetFile</param>
+                <param name="contentDisposition">attachment;filename="${fileId}"</param>
+                <param name="bufferSize">4096</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">actionErrors</param>
+            </result>
+        </action>
+        
+        <action name="play" class="PlayAction">
+            <result name="success">play.jsp</result>
+            <result name="error">message.jsp</result>
+        </action>
+        
+        <action name="feedback_list" class="FeedbackAction" method="getList">
+            <result name="success">feedbacklist.jsp</result>
+            <result name="error">message.jsp</result>
+        </action>
+        
+        <action name="feedback_add" class="FeedbackAction" method="add">
+            <result name="input">feedbackadd.jsp</result>
+            <result name="success" type="json">
+                <param name="root">actionMessages</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">actionErrors</param>
+            </result>
+        </action>
+        
+        <action name="info" class="InfoAction" method="execute">
+            <result name="success" type="json">
+                
+            </result>
+        </action>
+        
+        <action name="*">
+            <result>{1}.jsp</result>
+        </action>
+    </package>
+</struts>

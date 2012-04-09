@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+	<table name="user_login" catalog="gather"
+		class="com.rmssmobile.gather.model.UserLogin">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="user" catalog="gather"
+		class="com.rmssmobile.gather.model.User">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="category" catalog="gather"
+		class="com.rmssmobile.gather.model.Category">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="feedback" catalog="gather"
+		class="com.rmssmobile.gather.model.Feedback">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="project" catalog="gather"
+		class="com.rmssmobile.gather.model.Project">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+	<table name="browser_extension_category" catalog="browser"
+		class="com.jike.mobile.browser.model.Category">
+		<primary-key>
+			<generator class="native"></generator>
+		</primary-key>
+	</table>
+<table name="browser_extension_item" catalog="browser"
+	class="com.jike.mobile.browser.model.Item">
+	<primary-key>
+		<generator class="native"></generator>
+	</primary-key>
+</table>
+</hibernate-reverse-engineering>

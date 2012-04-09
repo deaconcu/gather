@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="gather"
+  id="myeclipse.1331602033434"
+  context-root="/gather"
+  j2ee-spec="6.0"
+  archive="gather.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
