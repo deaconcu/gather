@@ -26,77 +26,97 @@
 		</property>
 		<property name="mappingResources">
 			<list>
-				<value>com/rmssmobile/gather/model/UserLogin.hbm.xml</value>
-				<value>com/rmssmobile/gather/model/User.hbm.xml</value>
-				<value>com/rmssmobile/gather/model/Feedback.hbm.xml</value>
+				<value>com/jike/mobile/gather/model/UserLogin.hbm.xml</value>
+				<value>com/jike/mobile/gather/model/User.hbm.xml</value>
+				<value>com/jike/mobile/gather/model/Feedback.hbm.xml</value>
+				<value>com/jike/mobile/gather/model/Audio.hbm.xml</value>
 		    </list>
 		</property>
 	</bean>
 	
+	<!-- system config -->
+	
+	<bean name="serverConfigService" class="com.jike.mobile.gather.service.impl.ServerConfigServiceImpl"></bean>
+    
+    <bean name="ServerConfig" class="com.jike.mobile.gather.util.ServerConfig">
+        <property name="serverConfigService"><ref bean="serverConfigService" /></property>
+    </bean>
+   
+	
 	<!-- Action -->
 	
-	<bean id="UploadAction" class="com.rmssmobile.gather.action.UploadAction" scope="prototype">
-        <property name="fileService">
-            <ref bean="FileService" />
+	<bean id="audioAction" class="com.jike.mobile.gather.action.AudioAction" scope="prototype">
+        <property name="audioService">
+            <ref bean="audioService" />
         </property>
     </bean>
     
-    <bean id="DownloadAction" class="com.rmssmobile.gather.action.DownloadAction" scope="prototype">
-        <property name="fileService">
-            <ref bean="FileService" />
+    <bean id="downloadAction" class="com.jike.mobile.gather.action.DownloadAction" scope="prototype">
+        <property name="audioService">
+            <ref bean="audioService" />
         </property>
     </bean>
     
-    <bean id="CharsAction" class="com.rmssmobile.gather.action.CharsAction" scope="prototype">
-        <property name="fileService">
-            <ref bean="FileService" />
+    <bean id="charsAction" class="com.jike.mobile.gather.action.CharsAction" scope="prototype">
+        <property name="audioService">
+            <ref bean="audioService" />
         </property>
     </bean>
     
-    <bean id="PlayAction" class="com.rmssmobile.gather.action.PlayAction" scope="prototype"></bean>
+    <bean id="playAction" class="com.jike.mobile.gather.action.PlayAction" scope="prototype"></bean>
     
-    <bean id="FeedbackAction" class="com.rmssmobile.gather.action.FeedbackAction" scope="prototype">
+    <bean id="feedbackAction" class="com.jike.mobile.gather.action.FeedbackAction" scope="prototype">
         <property name="feedbackService">
-            <ref bean="FeedbackService" />
+            <ref bean="feedbackService" />
         </property>
     </bean>
     
-    <bean id="InfoAction" class="com.rmssmobile.gather.action.InfoAction" scope="prototype"></bean>
+    <bean id="infoAction" class="com.jike.mobile.gather.action.InfoAction" scope="prototype"></bean>
     
     
     <!-- Service -->
     <!-- scope="singleton" -->
     
-    <bean id="FileService" class="com.rmssmobile.gather.service.impl.FileServiceImpl" scope="prototype">
+    <bean id="audioService" class="com.jike.mobile.gather.service.impl.AudioServiceImpl" scope="prototype">
+        <property name="audioDao"><ref bean="audioDao" /></property>
+        <property name="thriftService"><ref bean="thriftService" /></property>
     </bean>
     
-    <bean id="FeedbackService" class="com.rmssmobile.gather.service.impl.FeedbackServiceImpl" scope="prototype">
+    <bean id="feedbackService" class="com.jike.mobile.gather.service.impl.FeedbackServiceImpl" scope="prototype">
         <property name="feedbackDao">
-            <ref bean="FeedbackDao" />
+            <ref bean="feedbackDao" />
         </property>
     </bean>
-   
-   
+    
+    <bean name="thriftService" class="com.jike.mobile.gather.service.impl.ThriftServiceImpl"></bean>
+
     <!-- Dao -->
     
-    <bean id="UserLoginDAO"
-        class="com.rmssmobile.gather.dao.impl.UserLoginDaoImpl">
+    <bean id="userLoginDAO"
+        class="com.jike.mobile.gather.dao.impl.UserLoginDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory"/>
         </property>
     </bean>
     
-    <bean id="UserDao" class="com.rmssmobile.gather.dao.impl.UserDaoImpl">
+    <bean id="userDao" class="com.jike.mobile.gather.dao.impl.UserDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>
     </bean>
     
-    <bean id="FeedbackDao" class="com.rmssmobile.gather.dao.impl.FeedbackDaoImpl">
+    <bean id="feedbackDao" class="com.jike.mobile.gather.dao.impl.FeedbackDaoImpl">
     	<property name="sessionFactory">
     		<ref bean="sessionFactory" />
     	</property>
     </bean>
+    
+    <bean id="audioDao" class="com.jike.mobile.gather.dao.impl.AudioDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
     
 </beans>
 

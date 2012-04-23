@@ -13,28 +13,30 @@
         </action>
          -->
          
-        <action name="chars" class="CharsAction">
+        <action name="chars" class="charsAction">
             <result name="success" type="json">
                 <param name="includeProperties">chars</param>
             </result>
         </action>
          
-        <action name="upload" class="UploadAction">
+        <action name="upload" class="audioAction" method="upload">
             <interceptor-ref name="defaultStack">
                 <param name="fileUpload.allowedTypes"></param>
                 <param name="fileUpload.maximumSize">2097152</param>
             </interceptor-ref>
-            <result name="input">upload.jsp</result>
-            <result name="success" type="json">
-                <param name="root">uploadFile</param>
-                <param name="includeProperties">playUrl</param>
+            <result name="input">/WEB-INF/views/upload.jsp</result>  
+            
+            <result name="success" type="stream">
+                <param name="contentType">text/html</param>
+                <param name="inputName">playUrl</param>
             </result>
+            
             <result name="error" type="json">
                 <param name="root">actionErrors</param>
             </result>
         </action>
         
-        <action name="download" class="DownloadAction">
+        <action name="download" class="downloadAction">
             <result name="success" type="stream">
                 <param name="contentType">audio/mpeg</param>
                 <param name="inputName">targetFile</param>
@@ -46,17 +48,17 @@
             </result>
         </action>
         
-        <action name="play" class="PlayAction">
-            <result name="success">play.jsp</result>
-            <result name="error">message.jsp</result>
+        <action name="play" class="playAction">
+            <result name="success">/WEB-INF/views/play.jsp</result>
+            <result name="error">/WEB-INF/views/message.jsp</result>
         </action>
         
-        <action name="feedback_list" class="FeedbackAction" method="getList">
-            <result name="success">feedbacklist.jsp</result>
-            <result name="error">message.jsp</result>
+        <action name="feedback_list" class="feedbackAction" method="getList">
+            <result name="success">/WEB-INF/views/feedbacklist.jsp</result>
+            <result name="error">/WEB-INF/views/message.jsp</result>
         </action>
         
-        <action name="feedback_add" class="FeedbackAction" method="add">
+        <action name="feedback_add" class="feedbackAction" method="add">
             <result name="input">feedbackadd.jsp</result>
             <result name="success" type="json">
                 <param name="root">actionMessages</param>
@@ -66,14 +68,11 @@
             </result>
         </action>
         
-        <action name="info" class="InfoAction" method="execute">
+        <action name="info" class="infoAction" method="execute">
             <result name="success" type="json">
                 
             </result>
         </action>
-        
-        <action name="*">
-            <result>{1}.jsp</result>
-        </action>
+       
     </package>
 </struts>
