@@ -1,9 +1,8 @@
 package com.jike.mobile.gather.action;
 
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayInputStream; 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,11 +30,15 @@ public class AudioAction extends ActionSupport{
 	private String fileFileName;	
 	private String md5;
 	
+	private String id;
+	
 	//inject
 	private AudioService audioService;
 
 	//output
 	private UploadFile uploadFile;
+	private InputStream inputStream;
+	private String url;
 	
 	//action method
 	
@@ -56,14 +59,42 @@ public class AudioAction extends ActionSupport{
 		}
 	}
 	
+	@InputConfig(resultName=ERROR)
+	public String download() {
+		try {
+			setInputStream(audioService.download(id));
+			return SUCCESS;
+		} catch (ServiceException se) {
+			addActionError(getText(se.getMessage()));
+			return ERROR;
+		}
+	}
+	
+	@InputConfig(resultName=ERROR)
+	public String play() {
+	    setUrl(getBasePath() + "download.do?id=" + id);
+		return SUCCESS;
+	}
+	
 	//validate method
 	
 	public void validateUpload() {
 		if("POST".equals(ServletActionContext.getRequest().getMethod())) {
 			if(file == null || md5 == null || "".equals(md5)) {
-				addActionError(getText("upload.failed.field.is.null")); 
+				if(getFieldErrors().get("file") != null) addActionError(getFieldErrors().get("file").get(0)); 
+				else addActionError(getText("upload.failed.field.is.null"));
 			}
 		}
+	}
+	
+	public void validateDownload() {
+		if(id == null) addActionError(getText("download.parameter.is.empty"));
+		else if(id.matches("[a-f\\d]{8}_[a-f\\d]{4}_[a-f\\d]{4}_[a-f\\d]{4}_[a-f\\d]{12}")) addActionError(getText("download.parameter.is.illegal"));
+	}
+	
+	public void validatePlay() {
+		if(id == null) addActionError(getText("play.fileid.is.empty"));
+		else if(id.matches("[a-f\\d]{8}_[a-f\\d]{4}_[a-f\\d]{4}_[a-f\\d]{4}_[a-f\\d]{12}")) addActionError(getText("play.fileid.is.invalid"));
 	}
 	
 	//output method
@@ -74,6 +105,10 @@ public class AudioAction extends ActionSupport{
 			root.put("playUrl", getBasePath() + "play.do?id=" + uploadFile.getId());
 			return getStreamFromJson(root);
 		} else return null;
+	}
+	
+	public InputStream getTargetFile() {
+		return inputStream;
 	}
 	
 	//private method
@@ -87,9 +122,7 @@ public class AudioAction extends ActionSupport{
 	}
 	
 	private InputStream getStreamFromJson(JSONObject object) {
-		log.info(object.toString());
 		byte[] json = (object.toString()).getBytes();
-		log.info(Arrays.toString(json));
 		return new ByteArrayInputStream(json);
 	}
 	
@@ -141,6 +174,30 @@ public class AudioAction extends ActionSupport{
 
 	public void setUploadFile(UploadFile uploadFile) {
 		this.uploadFile = uploadFile;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

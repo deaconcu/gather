@@ -25,7 +25,6 @@ public class ThriftServiceImpl implements ThriftService {
 	}
 	
 	public int put(String id, File file) throws ServiceException {
-		log.info("file:" + file.toString());
 		byte[] bytes = new byte[1024];
 		StringBuffer stringBuffer = new StringBuffer();
 		InputStream inputStream = null;
@@ -33,7 +32,7 @@ public class ThriftServiceImpl implements ThriftService {
 			inputStream = new BufferedInputStream(new FileInputStream(file));
 			
 			int length = 0;
-			while((length = inputStream.read(bytes)) > 0){
+			while((length = inputStream.read(bytes)) > 0){		
 				for(int i = 0; i < length; i++) {
 					String hex = Integer.toHexString(bytes[i] & 0xFF);
 					if (hex.length() == 1) {
@@ -52,18 +51,18 @@ public class ThriftServiceImpl implements ThriftService {
 				log.error("Can't close file");
 			}
 		}
-		log.info("String:" + stringBuffer);
+		
 		try {
-			//connection.open();	
-			int result = 0;
-			//int result = connection.put(id, stringBuffer.toString(), Integer.parseInt(ServerConfig.get("thrift_expire_time")));
+			connection.open();	
+			//int result = 0;
+			int result = connection.put(id, stringBuffer.toString(), Integer.parseInt(ServerConfig.get("thrift_expire_time")));
 			
 			if(result != 0) {
 				log.error("thrift upload error, error code:" + result);
 				throw new ServiceException("upload.failed.ioexception");
 			}
 			
-			//connection.close();
+			connection.close();
 			return result;
 		} catch (Exception e) {
 			log.error(e.toString());
@@ -72,7 +71,33 @@ public class ThriftServiceImpl implements ThriftService {
 	}
 	
 	public byte[] read(String id) throws ServiceException {
-		return null;
+		String value;
+		try {
+			connection.open();	
+			value = connection.read(id);
+			connection.close();
+		} catch (Exception e) {
+			log.error(e.toString());
+			throw new ServiceException("upload.failed.ioexception");
+		}
+		
+		if("".equals(value)) {
+			log.warn("download file is not exist, file id: " + id);
+			throw new ServiceException("download.file.is.not.exist");
+		}
+		
+		char[] chars = new char[value.length()];
+		byte[] bytes = new byte[value.length()/2];
+		value.getChars(0, value.length(), chars, 0);
+
+		for(int i = 0; i < chars.length; i+=2) {
+			
+			byte high = (byte) (Byte.parseByte(new String(new char[]{chars[i]}), 16) << 4);
+			byte low = Byte.parseByte(new String(new char[]{chars[i+1]}), 16);			
+			bytes[i/2] = (byte) (low | high);
+		}
+		
+		return bytes;
 	}
 }
 

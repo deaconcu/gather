@@ -13,6 +13,10 @@ public class ServerConfig {
 	public static String get(String key) throws ServiceException {
 		return serverConfigService.get(key);
 	}
+	
+	public static Integer getInteger(String key) throws ServiceException {
+		return serverConfigService.getInteger(key);
+	}
 }
 
 

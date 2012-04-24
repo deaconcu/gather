@@ -51,20 +51,6 @@
         </property>
     </bean>
     
-    <bean id="downloadAction" class="com.jike.mobile.gather.action.DownloadAction" scope="prototype">
-        <property name="audioService">
-            <ref bean="audioService" />
-        </property>
-    </bean>
-    
-    <bean id="charsAction" class="com.jike.mobile.gather.action.CharsAction" scope="prototype">
-        <property name="audioService">
-            <ref bean="audioService" />
-        </property>
-    </bean>
-    
-    <bean id="playAction" class="com.jike.mobile.gather.action.PlayAction" scope="prototype"></bean>
-    
     <bean id="feedbackAction" class="com.jike.mobile.gather.action.FeedbackAction" scope="prototype">
         <property name="feedbackService">
             <ref bean="feedbackService" />
@@ -77,12 +63,12 @@
     <!-- Service -->
     <!-- scope="singleton" -->
     
-    <bean id="audioService" class="com.jike.mobile.gather.service.impl.AudioServiceImpl" scope="prototype">
+    <bean id="audioService" class="com.jike.mobile.gather.service.impl.AudioServiceImpl">
         <property name="audioDao"><ref bean="audioDao" /></property>
         <property name="thriftService"><ref bean="thriftService" /></property>
     </bean>
     
-    <bean id="feedbackService" class="com.jike.mobile.gather.service.impl.FeedbackServiceImpl" scope="prototype">
+    <bean id="feedbackService" class="com.jike.mobile.gather.service.impl.FeedbackServiceImpl">
         <property name="feedbackDao">
             <ref bean="feedbackDao" />
         </property>
@@ -91,6 +77,7 @@
     <bean name="thriftService" class="com.jike.mobile.gather.service.impl.ThriftServiceImpl"></bean>
 
     <!-- Dao -->
+    <!-- scope="singleton" -->
     
     <bean id="userLoginDAO"
         class="com.jike.mobile.gather.dao.impl.UserLoginDaoImpl">

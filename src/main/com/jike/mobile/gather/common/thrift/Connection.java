@@ -42,13 +42,13 @@ public class Connection {
 	
 	public int put(String id, String value, int expire_time) throws TException {
 		if(client == null) open();
-		log.info("id: " + id);
-		log.info("value: " + value);
-		log.info("expire_time: " + expire_time);
+//		log.info("id: " + id);
+//		log.info("value: " + value);
+//		log.info("expire_time: " + expire_time);
 		return (client.put(dbName, id, value, expire_time)).getValue();
 	}
 	
-	public String get(String id) throws TException {
+	public String read(String id) throws TException {
 		return client.read(dbName, id);
 	}
 }

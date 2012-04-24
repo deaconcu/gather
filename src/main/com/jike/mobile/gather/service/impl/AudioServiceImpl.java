@@ -1,6 +1,7 @@
 package com.jike.mobile.gather.service.impl;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,9 +59,8 @@ public class AudioServiceImpl implements AudioService{
 	}
 	
 	@Override
-	public InputStream download(String path) {
-		log.info(path);
-		return ServletActionContext.getServletContext().getResourceAsStream(path);
+	public InputStream download(String key) throws ServiceException{
+		return new ByteArrayInputStream(thriftService.read(key));
 	}
 
 	@Override
@@ -92,7 +92,6 @@ public class AudioServiceImpl implements AudioService{
 	private void thriftUpload(UploadFile uFile) throws ServiceException {
 		String fileId = UUID.randomUUID().toString();
 		uFile.setId(fileId);
-		log.info(fileId);
 		thriftService.put(fileId, uFile.getFile());
 	}
 	

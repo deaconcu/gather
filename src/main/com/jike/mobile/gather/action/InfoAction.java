@@ -1,10 +1,8 @@
 package com.jike.mobile.gather.action;
 
-import javax.servlet.ServletContext;
-
-import org.apache.struts2.ServletActionContext;
-
+import com.jike.mobile.gather.exception.ServiceException;
 import com.jike.mobile.gather.model.Info;
+import com.jike.mobile.gather.util.ServerConfig;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class InfoAction extends ActionSupport{
@@ -13,6 +11,23 @@ public class InfoAction extends ActionSupport{
 	
 	private Info info;
 	
+	// action method
+	
+	public String execute() {
+		info = new Info();
+		try {
+			info.setVersion(ServerConfig.get("androidVersion"));
+			info.setDownloadUrl(ServerConfig.get("androidDownloadUrl"));
+			info.setVersionDesc(ServerConfig.get("androidVersionDesc"));
+			return SUCCESS;
+			
+		} catch (ServiceException e) {
+			return ERROR;
+		}
+	}
+	
+	//setter && getter
+	
 	public Info getInfo() {
 		return info;
 	}
@@ -20,17 +35,4 @@ public class InfoAction extends ActionSupport{
 	public void setInfo(Info info) {
 		this.info = info;
 	}
-
-	public String execute() {
-		info = new Info();
-		
-		ServletContext sc = ServletActionContext.getServletContext();
-		
-		info.setVersion(sc.getInitParameter("androidVersion"));
-		info.setDownloadUrl(sc.getInitParameter("androidDownloadUrl"));
-		info.setVersionDesc(sc.getInitParameter("androidVersionDesc"));
-		
-		return SUCCESS;
-	}
-
 }

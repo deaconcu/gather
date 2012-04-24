@@ -29,6 +29,16 @@ public class ServerConfigServiceImpl implements ServerConfigService, ServletCont
 		}
 		return value;
 	}
+	
+	@Override
+	public Integer getInteger(String key) throws ServiceException {
+		try {
+			return Integer.parseInt(get(key));
+		} catch (NumberFormatException e) {
+			log.error(key + " is not a number!");
+			throw new ServiceException("system.internal.error");
+		}
+	}
 
 	@Override
 	public void set(String key, String value) {
@@ -60,5 +70,7 @@ public class ServerConfigServiceImpl implements ServerConfigService, ServletCont
 			e.printStackTrace();
 		}
 	}
+
+
 	
 }
