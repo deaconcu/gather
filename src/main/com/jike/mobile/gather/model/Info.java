@@ -2,8 +2,10 @@ package com.jike.mobile.gather.model;
 
 public class Info {
 	private String version;
+	private String versionCode;
 	private String downloadUrl;
 	private String versionDesc;
+	
 	
 	public String getVersion() {
 		return version;
@@ -22,6 +24,12 @@ public class Info {
 	}
 	public void setVersionDesc(String versionDesc) {
 		this.versionDesc = versionDesc;
+	}
+	public String getVersionCode() {
+		return versionCode;
+	}
+	public void setVersionCode(String versionCode) {
+		this.versionCode = versionCode;
 	}
 
 }

@@ -11,14 +11,14 @@
         <action name="user_*" class="com.rmssmobile.gather.action.UserAction" method="{1}">
             <result name="success">welcome.jsp</result>
         </action>
-         -->
-         
+        
         <action name="chars" class="charsAction">
             <result name="success" type="json">
                 <param name="includeProperties">chars</param>
             </result>
         </action>
-         
+        -->
+        
         <action name="upload" class="audioAction" method="upload">
             <interceptor-ref name="defaultStack">
                 <param name="fileUpload.allowedTypes"></param>
@@ -76,6 +76,51 @@
                 <param name="root">actionErrors</param>
             </result>
         </action>
+        
+        <action name="group_add" class="appUserAction" method="groupAdd">
+            <result name="input">/WEB-INF/views/group_add.jsp</result>
+            <result name="success" type="json">
+                <param name="root"></param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">actionErrors</param>
+            </result>
+        </action>
        
+        <action name="friend_save" class="appUserAction" method="saveFriend">
+            <result name="success" type="json"><param name="root">actionMessages</param></result>
+            <result name="error" type="json"><param name="root">actionErrors</param>
+            </result>
+        </action>
+        
+        <action name="group_save" class="appUserAction" method="saveGroup">
+            <result name="success" type="json"><param name="root">actionMessages</param></result>
+            <result name="error" type="json"><param name="root">actionErrors</param>
+            </result>
+        </action>
+        
     </package>
 </struts>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

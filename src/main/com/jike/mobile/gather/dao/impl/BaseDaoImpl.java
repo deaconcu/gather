@@ -43,7 +43,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 		try {
 			getHibernateTemplate().save(entity);
 		} catch (RuntimeException re) {
-			log.error(entity.getClass() + " entity save failed");
+			log.error(entity.getClass() + " entity save failed: " + re.toString());
 			throw re;
 		}
 	}
@@ -53,7 +53,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 		try {
 			getHibernateTemplate().update(entity);
 		} catch (RuntimeException re) {
-			log.error(entity.getClass() + " entity update failed");
+			log.error(entity.getClass() + " entity save failed: " + re.toString());
 			throw re;
 		}
 	}
@@ -63,7 +63,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 		try {
 			getHibernateTemplate().delete(entity);
 		} catch (RuntimeException re) {
-			log.error(entity.getClass() + " entity delete failed");
+			log.error(entity.getClass() + " entity save failed: " + re.toString());
 			throw re;
 		}
 		
@@ -74,7 +74,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 		try {
 			getHibernateTemplate().deleteAll(entities);
 		} catch (RuntimeException re) {
-			log.error("objects delete failed");
+			log.error("objects delete failed: " + re.toString());
 			throw re;
 		}
 		
@@ -86,7 +86,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 			T instance = (T) getHibernateTemplate().get(entityClass, id);
 			return instance;
 		} catch (RuntimeException re) {
-			log.error("get failed", re);
+			log.error("get failed: " + re.toString());
 			throw re;
 		}
 	}
@@ -98,7 +98,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 			List<T> results = getHibernateTemplate().findByExample(entity);
 			return results;
 		} catch (RuntimeException re) {
-			log.error("find by example failed", re);
+			log.error("find by example failed: " + re.toString());
 			throw re;
 		}
 	}
@@ -111,7 +111,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 					+ propertyName + "= ?";
 			return getHibernateTemplate().find(queryString, value);
 		} catch (RuntimeException re) {
-			log.error("find by property name failed", re);
+			log.error("find by property name failed: " + re.toString());
 			throw re;
 		}
 	}
@@ -141,7 +141,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T>{
 			String queryString = "from " + entityClassSimpleName;
 			return getHibernateTemplate().find(queryString);
 		} catch (RuntimeException re) {
-			log.error("find all failed", re);
+			log.error("find all failed: " + re.toString());
 			throw re;
 		}
 	}

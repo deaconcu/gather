@@ -17,6 +17,7 @@ public class InfoAction extends ActionSupport{
 		info = new Info();
 		try {
 			info.setVersion(ServerConfig.get("androidVersion"));
+			info.setVersionCode(ServerConfig.get("androidVersionCode"));
 			info.setDownloadUrl(ServerConfig.get("androidDownloadUrl"));
 			info.setVersionDesc(ServerConfig.get("androidVersionDesc"));
 			return SUCCESS;

@@ -3,7 +3,15 @@
 	xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans 
+	   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
     <!-- DataSource -->
     
@@ -20,19 +28,43 @@
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource"><ref bean="dataSource"/></property>
 		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-			</props>
-		</property>
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
 		<property name="mappingResources">
 			<list>
 				<value>com/jike/mobile/gather/model/UserLogin.hbm.xml</value>
 				<value>com/jike/mobile/gather/model/User.hbm.xml</value>
 				<value>com/jike/mobile/gather/model/Feedback.hbm.xml</value>
 				<value>com/jike/mobile/gather/model/Audio.hbm.xml</value>
+				<value>com/jike/mobile/gather/model/App.hbm.xml</value>
+				<value>com/jike/mobile/gather/model/AppUser.hbm.xml</value>
+				<value>com/jike/mobile/gather/model/AppUserGroup.hbm.xml</value>
 		    </list>
 		</property>
 	</bean>
+	
+	   
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+          <!-- all methods starting with 'get' are read-only -->
+           <tx:method name="find*" read-only="true"/>
+           <tx:method name="get*" read-only="true"/>
+           <!-- other methods use the default transaction settings (see below) -->
+           <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config>
+        <aop:pointcut id="servicePointcut" expression="execution(* com.jike.mobile.gather.service.impl.*Impl.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut"/>
+    </aop:config>
 	
 	<!-- system config -->
 	
@@ -59,6 +91,11 @@
     
     <bean id="infoAction" class="com.jike.mobile.gather.action.InfoAction" scope="prototype"></bean>
     
+    <bean id="appUserAction" class="com.jike.mobile.gather.action.AppUserAction" scope="prototype">
+        <property name="appUserService">
+            <ref bean="appUserService" />
+        </property>
+    </bean>
     
     <!-- Service -->
     <!-- scope="singleton" -->
@@ -75,6 +112,12 @@
     </bean>
     
     <bean name="thriftService" class="com.jike.mobile.gather.service.impl.ThriftServiceImpl"></bean>
+    
+    <bean id="appUserService" class="com.jike.mobile.gather.service.impl.AppUserServiceImpl">
+        <property name="appDao"><ref bean="appDao" /></property>
+        <property name="appUserDao"><ref bean="appUserDao" /></property>
+        <property name="appUserGroupDao"><ref bean="appUserGroupDao" /></property>
+    </bean>
 
     <!-- Dao -->
     <!-- scope="singleton" -->
@@ -99,6 +142,24 @@
     </bean>
     
     <bean id="audioDao" class="com.jike.mobile.gather.dao.impl.AudioDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
+    <bean id="appDao" class="com.jike.mobile.gather.dao.impl.AppDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
+    <bean id="appUserDao" class="com.jike.mobile.gather.dao.impl.AppUserDaoImpl">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    
+    <bean id="appUserGroupDao" class="com.jike.mobile.gather.dao.impl.AppUserGroupDaoImpl">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
         </property>

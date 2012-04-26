@@ -53,4 +53,20 @@
 		<url-pattern>/*</url-pattern> 
 	</filter-mapping>
 	
+	<!-- spring 对 hibernate 事务的支持 -->
+	
+	<filter>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+        <init-param>
+            <param-name>flushMode</param-name>
+            <param-value>AUTO</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	
 </web-app>
