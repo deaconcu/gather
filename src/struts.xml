@@ -99,6 +99,11 @@
             </result>
         </action>
         
+        <action name="user_get" class="appUserAction" method="findUser">
+            <result name="success">/WEB-INF/views/appUser.jsp</result>
+            <result name="error" type="json"><param name="root">actionErrors</param>
+            </result>
+        </action>
     </package>
 </struts>
 

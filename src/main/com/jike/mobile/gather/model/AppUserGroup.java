@@ -36,5 +36,10 @@ public class AppUserGroup implements Serializable{
 	public void setCreateTime(Long createTime) {
 		this.createTime = createTime;
 	}
+	
+	@Override
+	public String toString() {
+		return "111";
+	}
 
 }

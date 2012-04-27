@@ -18,14 +18,14 @@
 			<column name="createTime" not-null="true" />
 		</property>
 
-        <set name="friends" table="app_user_friend">
+        <set name="friends" table="app_user_friend" lazy="true">
             <key column="userId" />
             <many-to-many class="com.jike.mobile.gather.model.AppUser" column="friendUserId" />
         </set>
         
-        <set name="groups" table="app_user_group_contain" inverse="true">
-            <key column="userId" />
-            <many-to-many class="com.jike.mobile.gather.model.AppUser" column="groupId" />
+        <set name="groups" table="app_user_group_contain" inverse="true" lazy="true">
+            <key column="appUserId" />
+            <many-to-many class="com.jike.mobile.gather.model.AppUserGroup" column="groupId" />
         </set>
 	</class>
 </hibernate-mapping>

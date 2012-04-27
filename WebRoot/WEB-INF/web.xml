@@ -40,6 +40,25 @@
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
+    
+    <!-- 让hibernate session绑定请求，必须配置在struts filter之前 -->
+    <filter>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+        <init-param>
+            <param-name>flushMode</param-name>
+            <param-value>AUTO</param-value>
+        </init-param>
+        <init-param>
+            <param-name>singleSession</param-name>
+            <param-value>true</param-value> 
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>OpenSessionInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 	
 	<filter>
 		<filter-name>struts2</filter-name>
@@ -53,20 +72,5 @@
 		<url-pattern>/*</url-pattern> 
 	</filter-mapping>
 	
-	<!-- spring 对 hibernate 事务的支持 -->
-	
-	<filter>
-        <filter-name>OpenSessionInViewFilter</filter-name>
-        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
-        <init-param>
-            <param-name>flushMode</param-name>
-            <param-value>AUTO</param-value>
-        </init-param>
-    </filter>
-    
-    <filter-mapping>
-        <filter-name>OpenSessionInViewFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 	
 </web-app>
