@@ -3,7 +3,6 @@ package com.jike.mobile.gather.action;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class AppUserAction extends ActionSupport {
 	// fields
 	
 	// input
-	private String idAndfriends;
+	private String idAndFriends;
 	private String group;
 	
 	private String userId;
@@ -43,7 +42,7 @@ public class AppUserAction extends ActionSupport {
 	public String saveFriend() {
 		ArrayList<AppUser> appUserList = new ArrayList<AppUser>();
 		try {
-			readFriendsFromJson(idAndfriends, appUserList);
+			readFriendsFromJson(idAndFriends, appUserList);
 			appUserService.saveFriend(appUserList);
 
 			addActionMessage(getText("operation.success"));
@@ -83,7 +82,7 @@ public class AppUserAction extends ActionSupport {
 
 	// validate
 	public void validateSaveFriend() {
-		if (idAndfriends == null && "".equals(idAndfriends)) {
+		if (idAndFriends == null && "".equals(idAndFriends)) {
 			addActionError(getText("input.argu.is.null"));
 		}
 	}
@@ -195,12 +194,13 @@ public class AppUserAction extends ActionSupport {
 
 	// setter&&getter
 
-	public String getIdAndfriends() {
-		return idAndfriends;
+
+	public String getIdAndFriends() {
+		return idAndFriends;
 	}
 
-	public void setIdAndfriends(String idAndfriends) {
-		this.idAndfriends = idAndfriends;
+	public void setIdAndFriends(String idAndFriends) {
+		this.idAndFriends = idAndFriends;
 	}
 
 	public AppUserService getAppUserService() {
