@@ -28,5 +28,8 @@ public class App implements Serializable {
 		this.appName = appName;
 	}
 	
+	public String toString() {
+		return this.appName;
+	}
 	
 }

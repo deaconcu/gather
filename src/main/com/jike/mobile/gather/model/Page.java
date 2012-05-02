@@ -16,4 +16,7 @@ public class Page {
 		this.count = count;
 	}
 	
+	public String toString() {
+		return Integer.toString(current) + ": " + Integer.toString(count); 
+	}
 }

@@ -46,26 +46,6 @@
 		</property>
 	</bean>
 	
-	   
-    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    
-    <tx:advice id="txAdvice" transaction-manager="txManager">
-        <tx:attributes>
-          <!-- all methods starting with 'get' are read-only -->
-           <tx:method name="find*" read-only="true"/>
-           <tx:method name="get*" read-only="true"/>
-           <!-- other methods use the default transaction settings (see below) -->
-           <tx:method name="*"/>
-        </tx:attributes>
-    </tx:advice>
-    
-    <aop:config>
-        <aop:pointcut id="servicePointcut" expression="execution(* com.jike.mobile.gather.service.impl.*Impl.*(..))"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut"/>
-    </aop:config>
-	
 	<!-- system config -->
 	
 	<bean name="serverConfigService" class="com.jike.mobile.gather.service.impl.ServerConfigServiceImpl"></bean>
@@ -165,6 +145,40 @@
         </property>
     </bean>
     
+    <!-- aop -->
+    
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+          <!-- all methods starting with 'get' are read-only -->
+           <tx:method name="find*" read-only="true"/>
+           <tx:method name="get*" read-only="true"/>
+           <!-- other methods use the default transaction settings (see below) -->
+           <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    
+    <aop:config>
+        <aop:pointcut id="action" expression="execution(* com.jike.mobile.gather.action.*Action.*(..))" />
+        <aop:pointcut id="service" expression="execution(* com.jike.mobile.gather.service.impl.*Impl.*(..))" />
+        <aop:pointcut id="dao" expression="execution(* com.jike.mobile.gather.dao.impl.*Impl.*(..))" />
+        
+        <!-- transaction -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="service"/>
+    
+        <aop:aspect id="transaction" ref="timeAdvice">
+            <!-- <aop:around pointcut-ref="action" method="total" /> -->
+            <aop:around pointcut-ref="dao" method="part" />
+            <aop:around pointcut-ref="service" method="part" />
+        </aop:aspect>
+           
+    </aop:config>
+    
+    <bean id="timeAdvice" class="com.jike.mobile.gather.common.aop.Timer" />
     
 </beans>
 

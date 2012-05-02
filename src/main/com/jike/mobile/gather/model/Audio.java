@@ -22,4 +22,8 @@ public class Audio {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+	
+	public String toString() {
+		return uuid;
+	}
 }	

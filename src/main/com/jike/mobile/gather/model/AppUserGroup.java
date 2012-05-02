@@ -39,7 +39,7 @@ public class AppUserGroup implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "111";
+		return id.toString();
 	}
 
 }
